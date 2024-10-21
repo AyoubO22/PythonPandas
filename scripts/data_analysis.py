@@ -1,52 +1,52 @@
 import pandas as pd
 import time
 
-# Fonction pour mesurer le temps d'exécution
-def mesurer_temps(fonction):
+# Function to measure execution time
+def measure_time(function):
     def wrapper(*args, **kwargs):
         start_time = time.time()
-        resultat = fonction(*args, **kwargs)
+        result = function(*args, **kwargs)
         end_time = time.time()
-        print(f"Temps d'exécution de {fonction.__name__}: {end_time - start_time:.2f} secondes")
-        return resultat
+        print(f"Execution time of {function.__name__}: {end_time - start_time:.2f} seconds")
+        return result
     return wrapper
 
-@mesurer_temps
-def importer_donnees(file_path):
+@measure_time
+def import_data(file_path):
     return pd.read_csv(file_path)
 
-@mesurer_temps
-def trier_donnees(df, colonne):
-    return df.sort_values(by=colonne)
+@measure_time
+def sort_data(df, column):
+    return df.sort_values(by=column)
 
-@mesurer_temps
-def filtrer_donnees(df, condition):
+@measure_time
+def filter_data(df, condition):
     return df.query(condition)
 
-@mesurer_temps
-def calculer_statistiques(df, colonnes):
-    return df[colonnes].mean(), df[colonnes].sum()
+@measure_time
+def calculate_statistics(df, columns):
+    return df[columns].mean(), df[columns].sum()
 
-# Fonction principale pour exécuter les tests
-def executer_tests(file_path):
-    df = importer_donnees(file_path)
+# Main function to run the tests
+def run_tests(file_path):
+    df = import_data(file_path)
 
-    # Tri des données
-    df_trie = trier_donnees(df, 'colonne_a_trier')
+    # Sorting the data
+    sorted_df = sort_data(df, 'column_to_sort')
 
-    # Filtrage des données
-    df_filtre = filtrer_donnees(df_trie, 'colonne_condition > 500')
+    # Filtering the data
+    filtered_df = filter_data(sorted_df, 'column_condition > 500')
 
-    # Calcul des statistiques
-    moyennes, sommes = calculer_statistiques(df_filtre, ['colonne1', 'colonne2'])
-    print("Moyennes :", moyennes)
-    print("Sommes :", sommes)
+    # Calculating statistics
+    means, sums = calculate_statistics(filtered_df, ['column1', 'column2'])
+    print("Means:", means)
+    print("Sums:", sums)
 
-# Exemple d'utilisation
+# Example usage
 if __name__ == "__main__":
-    for taille in ['donnees/synthétiques_10000.csv',
-                   'donnees/synthétiques_100000.csv',
-                   'donnees/synthétiques_500000.csv',
-                   'donnees/synthétiques_1000000.csv']:
-        print(f"\nTests sur {taille}:")
-        executer_tests(taille)
+    for size in ['donnees/synthétiques_10000.csv',
+                 'donnees/synthétiques_100000.csv',
+                 'donnees/synthétiques_500000.csv',
+                 'donnees/synthétiques_1000000.csv']:
+        print(f"\nTests on {size}:")
+        run_tests(size)
